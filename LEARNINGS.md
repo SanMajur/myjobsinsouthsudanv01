@@ -3,16 +3,19 @@
 - **Learned:** How to install a NEXT.js project with TypeScript + Tailwind using `npx create-next-app/latest
 - **Shipped:** Cleaned biolerplate in app/page.tsx and got localhost:3000 running
 - **Next:** Create types/jobs.ts and write my first Job interface
+
+
 ## 23-05-2026 - Day 1
 
 ### **Win:** 
 Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes before code hit browser.
 
 ### **TypeScript: Types Prevent Runtime Bugs**
-- **Interface = Blueprint**: `interface Job` in `types/job.ts` defines required shape. Forces every job to have `id`, `title`, `company`, `location`, `postedAt`.
+- **Interface = Blueprint**: `interface Job` in `types/job.ts` defines required shape. Forces every job to have `id`, `title`, `company`, `location`, `postedAt`, `isRemote`.
 - **Arrays of Objects**: `Job[]` enables `.map()`, `.filter()`, `.length`. One `Job` = object, `Job[]` = list.
 - **Import/Export**: `export interface Job` → `import { Job } from '@/types/job'`. Gives autocomplete, catches typos like `job.tilte`.
 - **String vs Number**: `age = "Santino"` after `age = 20` is silent JS bug. `title: string` forces strings only. `123.toUpperCase()` crashes because only strings have that method.
+- **Boolean Types**: `isRemote: boolean` only accepts `true`/`false`. `isRemote: "yes"` causes TS error. Prevents truthy string bugs.
 
 ### **Date Object: Time Is Tricky**
 - **Two Types**: `Date.now()` → `number`. `new Date()` → `Date` object. Use `.getTime()` only on Date objects.
@@ -26,10 +29,16 @@ Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes befo
 - **Impure Functions**: Calling `Date.now()`, `Math.random()` during render = unstable. React rule: same props → same output.
 - **setState Rules**: Never call `setState` in render body. Move to `useEffect(() => {}, [])` to run once after mount.
 - **Purity Boundary**: `Date.now()` inside functions is safe. Only impure when called directly in JSX during render.
+- **Conditional Rendering**: `{condition && <Element />}` pattern. React renders nothing if `false`. Used for Remote badge.
+
+### **Styling: Tailwind CSS**
+- **Utility Classes**: `className="font-bold text-3xl"` applies styles directly. Faster than writing CSS files.
+- **Color Scale**: `bg-green-100` = very light green background, `text-green-800` = dark green text. Higher number = darker.
+- **Spacing**: `px-2 py-1` = padding x/y. `rounded` = border-radius. `text-sm` = smaller font.
 
 ### **Code Architecture: Keep It DRY**
 - **Extract Helpers**: Move repeated logic to `utils/` folder. `getDaysAgo()` in `utils/date.ts`.
 - **Explicit Return Types**: `: number` on functions prevents accidentally returning strings. TS catches it.
 
 ### **Key Takeaway**
-TS caught: `string vs number`, `Date vs number`, `missing postedAt`. Without TS, all 3 would crash in production for users.
+TS caught: `string vs number`, `Date vs number`, `missing postedAt`, `boolean vs string`. Without TS, all 4 would crash in production for users.
