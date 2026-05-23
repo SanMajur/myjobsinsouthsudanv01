@@ -26,10 +26,9 @@ export const fakeJobs: Job[] = [
     id: 3,
     title: "M&E Officer",
     company: "UNICEF",
-    location: "Remote",
+    location: "Wau",
     postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
     isRemote: true,
     employmentType: "Contract",
-    salary: 1500
   }
 ]
