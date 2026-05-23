@@ -1,5 +1,34 @@
+import { Job } from '@/types/job';
+
+// Job[] = tells TS "this must be an array of Job objects"
+const fakeJobs: Job[] = [
+  {
+    id: '1',
+    title: "Accountant",
+    company: "Equity Bank",
+    location: "Juba, South Sudan",
+  },
+  {
+    id: '2', 
+    title: "Driver",
+    company: "UN Mission",
+    location: "Wau, South Sudan",
+  }
+];
+
 export default function Home() {
   return (
-    <h1 className="text-4xl text-cyan-900 text-center p-8">My Jobs In South Sudan</h1>
+    <div>
+      <h1>Job Listings</h1>
+      <ul>
+        {fakeJobs.map((job) => (
+          <li key={job.id}>
+            <h2>{job.title}</h2>
+            <p>{job.company}</p>
+            <p>{job.location}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
