@@ -8,7 +8,7 @@
 ## 23-05-2026 - Day 1
 
 ### **Win:** 
-Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes before code hit browser.
+Shipped `postedAt: Date` with hydration fix. TS prevented 6 runtime crashes before code hit browser.
 
 ### **TypeScript: Types Prevent Runtime Bugs**
 - **Interface = Blueprint**: `interface Job` in `types/job.ts` defines required shape. Forces every job to have `id`, `title`, `company`, `location`, `postedAt`, `isRemote`.
@@ -16,6 +16,10 @@ Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes befo
 - **Import/Export**: `export interface Job` → `import { Job } from '@/types/job'`. Gives autocomplete, catches typos like `job.tilte`.
 - **String vs Number**: `age = "Santino"` after `age = 20` is silent JS bug. `title: string` forces strings only. `123.toUpperCase()` crashes because only strings have that method.
 - **Boolean Types**: `isRemote: boolean` only accepts `true`/`false`. `isRemote: "yes"` causes TS error. Prevents truthy string bugs.
+- **Union Types**: `employmentType: 'Full-time' | 'Part-time' | 'Contract' | 'Internship'` restricts field to specific values only. Prevents typos like "Fulltime".
+- **Optional Properties**: `employmentType?` means field can be `undefined`. Must check before using. No error if missing in object.
+- **Union + Optional**: `?: 'A' | 'B'` combines both. Value is either 'A', 'B', or `undefined`.
+- **Type Narrowing**: `{job.employmentType && ...}` tells TS "inside here it definitely exists". Prevents undefined crashes.
 
 ### **Date Object: Time Is Tricky**
 - **Two Types**: `Date.now()` → `number`. `new Date()` → `Date` object. Use `.getTime()` only on Date objects.
@@ -30,15 +34,21 @@ Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes befo
 - **setState Rules**: Never call `setState` in render body. Move to `useEffect(() => {}, [])` to run once after mount.
 - **Purity Boundary**: `Date.now()` inside functions is safe. Only impure when called directly in JSX during render.
 - **Conditional Rendering**: `{condition && <Element />}` pattern. React renders nothing if `false`. Used for Remote badge.
+- **Type Narrowing in JSX**: `{job.employmentType && <span>{job.employmentType}</span>}` safely checks optional values before rendering.
 
 ### **Styling: Tailwind CSS**
 - **Utility Classes**: `className="font-bold text-3xl"` applies styles directly. Faster than writing CSS files.
-- **Color Scale**: `bg-green-100` = very light green background, `text-green-800` = dark green text. Higher number = darker.
-- **Spacing**: `px-2 py-1` = padding x/y. `rounded` = border-radius. `text-sm` = smaller font.
+- **Color Scale**: `bg-green-100` = very light green background, `text-green-800` = dark green text. `bg-blue-100` used for employmentType badge.
+- **Spacing**: `px-2 py-1` = padding x/y. `ml-2` = margin-left. `rounded` = border-radius. `text-sm` = smaller font.
 
 ### **Code Architecture: Keep It DRY**
 - **Extract Helpers**: Move repeated logic to `utils/` folder. `getDaysAgo()` in `utils/date.ts`.
 - **Explicit Return Types**: `: number` on functions prevents accidentally returning strings. TS catches it.
 
+### **Strategy: Domain Modeling**
+- **Model First**: Define `interface Job` with all core fields before building UI components. Prevents rewrites.
+- **Type-Driven Development**: Let TS errors guide missing data. Red squiggly in fakeJobs = forgot a field.
+- **One Concept Per Commit**: Add one field per learning session. Each teaches one TS concept. Prevents overload.
+
 ### **Key Takeaway**
-TS caught: `string vs number`, `Date vs number`, `missing postedAt`, `boolean vs string`. Without TS, all 4 would crash in production for users.
+TS caught: `string vs number`, `Date vs number`, `missing postedAt`, `boolean vs string`, `invalid union value`, `undefined access`. Without TS, all 6 would crash in production for users.
