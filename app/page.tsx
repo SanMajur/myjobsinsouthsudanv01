@@ -11,6 +11,7 @@ const fakeJobs: Job[] = [
     location: "Juba, South Sudan",
     postedAt: new Date("2024-06-01"),
     isRemote: true,
+    employmentType: "Full-time",
   },
   {
     id: "2",
@@ -19,7 +20,16 @@ const fakeJobs: Job[] = [
     location: "Wau, South Sudan",
     postedAt: new Date("2024-06-02"),
     isRemote: false,
+    employmentType: "Contract",
   },
+  {
+    id: "3",
+    title: "Teacher",
+    company: "Ministry of Education",
+    location: "Khartoum, South Sudan",
+    postedAt: new Date("2024-06-03"),
+    isRemote: true,
+  }
 ];
 
 export default function Home() {
@@ -37,6 +47,11 @@ export default function Home() {
             {job.isRemote && (
               <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
                 Remote
+              </span>
+            )}
+            {job.employmentType && (
+              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm ml-2">
+                {job.employmentType}
               </span>
             )}
           </li>
