@@ -3,7 +3,6 @@
 - **Learned:** How to install a NEXT.js project with TypeScript + Tailwind using `npx create-next-app/latest
 - **Shipped:** Cleaned biolerplate in app/page.tsx and got localhost:3000 running
 - **Next:** Create types/jobs.ts and write my first Job interface
-
 ## 23-05-2026 - Day 1
 
 ### **Win:** 
@@ -25,6 +24,12 @@ Shipped `postedAt: Date` with hydration fix. TS prevented 4 runtime crashes befo
 ### **Next.js + React: Render Must Be Pure**
 - **Hydration Error**: `Date.now()` in JSX crashes because server + client get different values. Fix: Add `'use client'` + `useState` + `useEffect` to run only in browser.
 - **Impure Functions**: Calling `Date.now()`, `Math.random()` during render = unstable. React rule: same props → same output.
+- **setState Rules**: Never call `setState` in render body. Move to `useEffect(() => {}, [])` to run once after mount.
+- **Purity Boundary**: `Date.now()` inside functions is safe. Only impure when called directly in JSX during render.
+
+### **Code Architecture: Keep It DRY**
+- **Extract Helpers**: Move repeated logic to `utils/` folder. `getDaysAgo()` in `utils/date.ts`.
+- **Explicit Return Types**: `: number` on functions prevents accidentally returning strings. TS catches it.
 
 ### **Key Takeaway**
 TS caught: `string vs number`, `Date vs number`, `missing postedAt`. Without TS, all 3 would crash in production for users.
