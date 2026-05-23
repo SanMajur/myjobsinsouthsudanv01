@@ -4,5 +4,6 @@ export interface Job {
   company: string;
   location: string;
   postedAt: Date;
-  isRemote?: boolean; // Optional property to indicate if the job is remote
+  isRemote?: boolean; 
+  employmentType?: "Full-time" | "Part-time" | "Contract" | "Internship";
 }
