@@ -8,7 +8,7 @@ export function JobCard({ job }: JobCardProps) {
   const daysAgo = getDaysAgo(job.postedAt);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow mb-4">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow ">
       {/* Header: Title + Remote badge */}
       <div className="flex items-start justify-between mb-2">
         <h3 className="font-bold text-lg text-gray-900">{job.title}</h3>
