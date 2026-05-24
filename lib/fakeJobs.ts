@@ -1,7 +1,7 @@
-// lib/fakeJobs.ts
+
 import { Job } from '@/types/job'
 
-export const fakeJobs: Job[] = [
+export const fakeJobs: Job[] = [ // Array of fake job listings to be used for testing and development purposes
   {
     id: 1,
     title: "Driver",
@@ -30,5 +30,15 @@ export const fakeJobs: Job[] = [
     postedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
     isRemote: true,
     employmentType: "Contract",
-  }
+  },
+  {
+    id: 4,
+    title: "HR Coordinator",
+    company: "World Food Programme",
+    location: "Juba",
+    postedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
+    isRemote: false,
+    employmentType: "Part-time",
+    salary: 1500
+  },
 ]
