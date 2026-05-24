@@ -58,3 +58,31 @@ TS caught: `string vs number`, `Date vs number`, `missing postedAt`, `boolean vs
 ### **Win:**
 Built full app architecture in 66min: components/, lib/, utils/, universal Footer. 6 files, 5 commits, 0 runtime errors.
 
+## 23-05-2026 - Day 2 - 10:00am to 11:30am
+
+### **Win:**
+Deployed v0.1 to Vercel. Live URL. Fixed iOS Safari button bug in prod. Posted to FB groups for user testing.
+
+### **Next.js + Deployment: Vercel is Magic**
+- **Zero config deploy**: `vercel` command builds + deploys. Auto-detects Next.js. 30sec to live URL.
+- **Auto redeploys**: `git push` triggers new deploy. No CI/CD setup needed for V1.
+- **Server Components**: `app/page.tsx` with no 'use client' renders on Vercel edge. Fast for MTN 2G.
+
+### **Mobile CSS: iOS Safari Lies**
+- **appearance-none**: Kills default iOS button gradients. Without it, `bg-gray-200` looks dark gray.
+- **Explicit text colors**: `bg-gray-200` MUST have `text-gray-900`. iOS picks white text otherwise = invisible.
+- **active: states**: `active:bg-gray-400` gives tap feedback. Mobile users need visual confirmation.
+
+### **React State: Filters Before DB**
+- **useState for UI**: `const [showRemoteOnly, setShowRemoteOnly] = useState(false)` toggles filter. No API needed.
+- **Derived state**: `filteredJobs = showRemoteOnly ? fakeJobs.filter(...) : fakeJobs`. Compute from source, don't store 2 arrays.
+- **'use client' boundary**: Added to page.tsx because useState only works in Client Components. Server Components can't have state.
+
+### **Strategy: Deploy > Perfect**
+- **4 jobs = ship**: Waiting for 20 jobs = never ship. Users test UX now, content later.
+- **1 filter = data**: "Show Remote Only" button tells you if users want filters. If 0 clicks, don't build salary filter.
+- **Bug in prod = learning**: iOS button bug only visible on real phone. Localhost lies. Deploy early catches real issues.
+
+### **Key Takeaway**
+Deployed with 1 bug, fixed in 5min. Users now testing. Without deploy, I'd still be adding features nobody wants. 
+
