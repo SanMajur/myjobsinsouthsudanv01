@@ -16,9 +16,14 @@ export default function Home() {
       </h1>
       <button
         onClick={() => setShowRemoteOnly(!showRemoteOnly)}
-        className={`mb-6 px-4 py-2 rounded ${showRemoteOnly ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+        className={`mb-6 px-4 py-2 rounded-lg font-medium transition-colors appearance-none
+    ${
+      showRemoteOnly
+        ? "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white"
+        : "bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-900"
+    }`}
       >
-        {showRemoteOnly ? "Showing Remote" : "Show Remote Only"}
+        {showRemoteOnly ? "Showing Remote Only" : "Show Remote Only"}
       </button>
       <div className="space-y-4">
         {filteredJobs.map((job) => (
