@@ -86,3 +86,20 @@ Deployed v0.1 to Vercel. Live URL. Fixed iOS Safari button bug in prod. Posted t
 ### **Key Takeaway**
 Deployed with 1 bug, fixed in 5min. Users now testing. Without deploy, I'd still be adding features nobody wants. 
 
+## 25-05-2026 - Day 3 - Indeed Redesign + TS Fixes
+
+### **Design: Indeed Layout + Wix Minimal**
+- **Search hero**: Input + filter button. Indeed pattern, 0KB icons. Users know how to use it.
+- **Job count**: "10 jobs in South Sudan" = inventory transparency. Builds trust vs mystery sites.
+- **Type safety**: Exported `Job`, ISO strings for dates. `Date` objects break JSON/SSR. Strings ship.
+
+### **Bugs: TypeScript Teaching Moments**
+- **Error 1**: `Job` not exported → Components can't import types. Fix: `export type Job`
+- **Error 2**: Missing file → Create `lib/formatRelativeTime.ts`. Utils = separate files.
+- **Error 3**: `Date` vs `string` → Data layer uses strings, UI formats. Separation of concerns.
+- **Rule**: Fix types immediately. TS errors now = runtime bugs later.
+
+### **Product: Two-Sided Market Live**
+- **Seekers**: Apply Now mailto = 0 backend, instant value. Cuts bounce 58% → 40% expected.
+- **Employers**: Post Job WhatsApp CTA = 6 NGO viewers can supply jobs same day.
+- **Loop**: More jobs → more seekers → more NGOs → more jobs. Started Day 3.
