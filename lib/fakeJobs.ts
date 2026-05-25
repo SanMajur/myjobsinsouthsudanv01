@@ -42,3 +42,7 @@ export const fakeJobs: Job[] = [ // Array of fake job listings to be used for te
     salary: 1500
   },
 ]
+
+
+export type { Job }
+
