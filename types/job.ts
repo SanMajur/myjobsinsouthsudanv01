@@ -3,7 +3,7 @@ export interface Job {
     title: string;
     company: string;
     location: string;
-    salary?: number;
+    salary?: string;
     employmentType: "Full-time" | "Part-time" | "Contract" | "Internship";
-    postedDate: Date;
+    postedDate: string;
 }
