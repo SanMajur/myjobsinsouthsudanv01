@@ -1,0 +1,32 @@
+export const RECENT_ROLE_SUGGESTIONS: string[] = [
+    "Software Engineer",
+    "Data Scientist",
+    "Product Manager",
+    "UX Designer",
+    "Marketing Specialist",
+    "Sales Representative",
+    "Customer Support",
+    "Human Resources",
+    "Financial Analyst",
+    "Operations Manager",
+    "Project Manager",
+    "Business Analyst",
+    "Content Writer",
+    "Graphic Designer",
+];
+
+export const LOCATION_SUGGESTIONS: string[] = [
+    "Juba",
+    "Wau",
+    "Malakal",
+    "Rumbek",
+    "Aweil",
+    "Yambio",
+    "Bor",
+    "Torit",
+    "Bentiu",
+    "Kapoeta",
+    "Pibor",
+    "Nimule",
+    "Remote",
+];
