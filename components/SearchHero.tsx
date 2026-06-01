@@ -12,6 +12,8 @@ export default function SearchHero() {
     // Implement search logic here, e.g., navigate to search results page with query parameters
     e.preventDefault();
     console.log("Searching for:", whatQuery, "in", whereQuery);
+    setWhatQuery("");
+    setWhereQuery("");
   };
   return (
     <section className="w-full border-b border-gray-100 bg-gray-50 py-12 px-4 md:py-16 md:px-8">
@@ -25,7 +27,7 @@ export default function SearchHero() {
           className="flex flex-col gap-4 rounded-xl bg-white p-4 shadown-md border border-gray-200 md:flex-row md:items-center"
         >
           {/* What Input Block */}
-          <div className="flex flex-1 flex-col gap-1">
+          <div className="relative flex flex-1 flex-col gap-1">
             <label
               htmlFor="what"
               className="text-sm font-bold tracking-wider text-gray-700 md:hidden sr-only"
@@ -61,7 +63,7 @@ export default function SearchHero() {
           </div>
           {/* Vertical divider visible only on desktop */}
           <div className="hidden h-8 w-px md:block  bg-gray-200"></div>
-          <div className="flex flex-1 flex-col gap-1">
+          <div className="relative flex flex-1 flex-col gap-1">
             <label
               htmlFor="where"
               className="text-sm font-bold tracking-wider text-gray-700 md:hidden sr-only"
