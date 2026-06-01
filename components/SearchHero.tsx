@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { RECENT_ROLE_SUGGESTIONS, LOCATION_SUGGESTIONS } from "@/lib/constants";
 
+import {Search, MapPin} from "lucide-react";
+
 export default function SearchHero() {
   const [whatQuery, setWhatQuery] = useState("");
   const [whereQuery, setWhereQuery] = useState("");
@@ -34,6 +36,8 @@ export default function SearchHero() {
             >
               Search jobs by title, keywords, or company
             </label>
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              <Search size={18} /></div>
             <input
               type="text"
               placeholder="Job title, keywords, company"
@@ -42,7 +46,7 @@ export default function SearchHero() {
               onFocus={() => setShowWhatSuggestions(true)}
               onBlur={() => setTimeout(() => setShowWhatSuggestions(false), 200)}
               id="what"
-              className="w-full py-2 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="w-full pl-10 pr-3 py-2  text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
             />
             {/* Suggestions dropdown List */}
             {showWhatSuggestions && (
@@ -70,6 +74,9 @@ export default function SearchHero() {
             >
               Search Jobs by City,state, region or location
             </label>
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              <MapPin size={18} />
+            </div>
             <input
               type="text"
               placeholder="City, state, or remote"
@@ -78,7 +85,7 @@ export default function SearchHero() {
               onFocus={() => setShowWhereSuggestions(true)}
               onBlur={() => setTimeout(() => setShowWhereSuggestions(false), 200)}
               id="where"
-              className="w-full py-2 px-3 text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+              className="w-full pl-10 pr-3 py-2  text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
             />
             {/* Suggestions dropdown List */}
             {showWhereSuggestions && (
