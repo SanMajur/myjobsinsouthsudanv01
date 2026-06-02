@@ -5,7 +5,6 @@ interface FeedHeaderProps {
 }
 
 export default function FeedHeader({ activeWhat, activeWhere, onClear }: FeedHeaderProps) {
-    console.log("FeedHeader values received:", { activeWhat, activeWhere });
     const hasWhatFilter = typeof activeWhat === "string" && activeWhat.trim().length > 0;
     const hasWhereFilter = typeof activeWhere === "string" && activeWhere.trim().length > 0;
     const isFiltering = hasWhatFilter || hasWhereFilter;
