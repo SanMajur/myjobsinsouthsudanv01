@@ -127,7 +127,7 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
           </button>
         </form>
         {validationError && (
-          <p className="mt-4 text-sm font-semibold text-left text-red-400 md:text-center">{validationError}</p>
+          <p className="mt-4 text-sm font-semibold  text-red-400 text-center">{validationError}</p>
         )}
       </div>
     </section>
