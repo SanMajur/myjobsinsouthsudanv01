@@ -13,12 +13,17 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
   const [whereQuery, setWhereQuery] = useState("");
   const [showWhatSuggestions, setShowWhatSuggestions] = useState(false);
   const [showWhereSuggestions, setShowWhereSuggestions] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
-    // Implement search logic here, e.g., navigate to search results page with query parameters
     e.preventDefault();
    
-    onSearch(whatQuery, whereQuery);
+    if (!whatQuery.trim() && !whereQuery.trim()) {
+      setValidationError("Please enter a job title or location to search.");
+      return;
+    }
+    setValidationError(null);
+    onSearch(whatQuery.trim(), whereQuery.trim());
 
     setWhatQuery("");
     setWhereQuery("");
@@ -49,11 +54,13 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
               autoComplete="off"
               placeholder="Job title, keywords, company"
               value={whatQuery}
-              onChange={(e) => setWhatQuery(e.target.value)}
+              onChange={(e) => {setWhatQuery(e.target.value)
+                if (validationError) setValidationError(null);
+              }}
               onFocus={() => setShowWhatSuggestions(true)}
               onBlur={() => setTimeout(() => setShowWhatSuggestions(false), 200)}
               id="what"
-              className="w-full h-10 pl-10 pr-3 py-2  text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-inset focus:ring-blue-600"
+              className={`w-full h-10 pl-10 pr-3 py-2  text-sm text-gray-900 border rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-inset focus:ring-blue-600 ${validationError ? "border-red-500 bg-red-50" : "border-gray-300 focus:border-blue-600"}`}
             />
             {/* Suggestions dropdown List */}
             {showWhatSuggestions && (
@@ -89,11 +96,13 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
               autoComplete="off"
               placeholder="City, state, or remote"
               value={whereQuery}
-              onChange={(e) => setWhereQuery(e.target.value)}
+              onChange={(e) => {setWhereQuery(e.target.value)
+                if (validationError) setValidationError(null);
+              }}
               onFocus={() => setShowWhereSuggestions(true)}
               onBlur={() => setTimeout(() => setShowWhereSuggestions(false), 200)}
               id="where"
-              className="w-full h-10 pl-10 pr-3 py-2  text-sm text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-inset focus:ring-blue-600"
+              className={`w-full h-10 pl-10 pr-3 py-2  text-sm text-gray-900 border  rounded-lg focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-inset focus:ring-blue-600 ${validationError ? "border-red-500 bg-red-50" : "border-gray-300 focus:border-blue-600"}`}
             />
             {/* Suggestions dropdown List */}
             {showWhereSuggestions && (
@@ -105,7 +114,7 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
                     key={suggestion}
                     type="button"
                     onClick={() => setWhereQuery(suggestion)}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                    className={`w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors ${validationError ? "border-red-500 bg-red-50" : "border-gray-300"}`}>
                     {suggestion}
                   </button>
                 ))}
@@ -117,6 +126,9 @@ export default function SearchHero({ onSearch }: SearchHeroProps) {
             Find jobs
           </button>
         </form>
+        {validationError && (
+          <p className="mt-4 text-sm font-semibold text-left text-red-400 md:text-center">{validationError}</p>
+        )}
       </div>
     </section>
   )
