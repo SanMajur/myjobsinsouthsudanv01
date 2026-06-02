@@ -24,11 +24,13 @@ export default function RootLayout({
       lang="en"
       className={`${inter.className} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col max-w-3xl mx-auto py-8">
-        {children}
+      <body className="min-h-screen flex flex-col w-full bg-white text-gray-900 antialiased">
+        <div className="flex-1 w-full">
+          {children}
+        </div>
         <Analytics />
         <SpeedInsights />
-        <Footer  />
+        <Footer />
       </body>
     </html>
   );
