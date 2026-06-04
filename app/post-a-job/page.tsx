@@ -16,16 +16,28 @@ export default function PostJobPage() {
     setError(null);
 
     try {
+      // 🌟 GET THE LOGGED-IN USER: Fetch active session data safely
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      
+      if (userError || !user) {
+        throw new Error("You must be logged in to post a position.");
+      }
+
+      // Attach the secure user token identity directly to the record payload
+      const jobPayload = {
+        ...formData,
+        user_id: user.id, 
+      };
+
       const { error: supabaseError } = await supabase
         .from("Job")
-        .insert([formData]);
+        .insert([jobPayload]);
 
       if (supabaseError) throw supabaseError;
 
       router.push("/");
       router.refresh();
     } catch (err: any) {
-      console.error(err);
       setError(err.message || "Failed to publish job posting.");
     } finally {
       setIsSubmitting(false);
@@ -34,17 +46,8 @@ export default function PostJobPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
-      <div className="mb-8 max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Post a New Position</h1>
-        <p className="text-sm text-gray-500 mt-1">Fill out the details below to broadcast your opening across South Sudan.</p>
-      </div>
-
-      {error && (
-        <div className="mb-6 max-w-2xl mx-auto rounded-xl bg-red-50 border border-red-200 p-4 text-sm font-semibold text-red-600">
-          ⚠️ Error: {error}
-        </div>
-      )}
-
+      <h1 className="text-3xl font-bold mb-6">Post a New Position</h1>
+      {error && <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl border border-red-200">{error}</div>}
       <JobForm onSubmit={handleCreate} isSubmitting={isSubmitting} />
     </main>
   );
