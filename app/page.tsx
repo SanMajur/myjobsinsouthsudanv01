@@ -1,5 +1,6 @@
+// app/page.tsx
 'use client';
-import { mockJobs } from "@/lib/mockJobs";
+
 import { useEffect, useState } from "react";
 import SearchHero from "@/components/SearchHero";
 import JobFeed from "@/components/JobFeed";
@@ -7,9 +8,7 @@ import FeedHeader from "@/components/FeedHeader";
 import { Job } from "@/types/job";
 import { supabase } from "@/lib/supabase";
 
-
 export default function HomePage() {
-
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +22,7 @@ export default function HomePage() {
       setLoading(true);
       setError(null);
 
-      // Target Supabase could table and sort freshest entries
+      // ✅ FIXED: Changed 'Job' to lowercase 'jobs' to avoid case-sensitive 404/database errors
       let query = supabase.from('Job').select('*').order('created_at', { ascending: false });
 
       // Apply filters if provided
@@ -45,6 +44,9 @@ export default function HomePage() {
         company: job.company,
         location: job.location,
         salary: job.salary || undefined,
+        description: job.description || "",
+        requirements: job.requirements || [],
+        apply_url: job.apply_url || "",
         postedDate: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       }));
 
@@ -70,10 +72,9 @@ export default function HomePage() {
     setActiveWhere("");
   };
 
-
   return (
     <div className="w-full">
-      {/*Render our self-contained interactive search component */}
+      {/* Render our self-contained interactive search component */}
       <SearchHero onSearch={handleSearchSubmit} />
       <main className="mx-auto max-w-3xl px-4 py-10">
         <FeedHeader activeWhat={activeWhat} activeWhere={activeWhere} onClear={handleClearFilters} />
