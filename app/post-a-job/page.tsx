@@ -1,7 +1,7 @@
 // app/post-a-job/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import JobForm from "@/components/JobForm";
@@ -9,24 +9,33 @@ import JobForm from "@/components/JobForm";
 export default function PostJobPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function checkUser() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        // 🌟 REDIRECT: If not logged in, bounce them to login cleanly
+        router.push("/login");
+      } else {
+        setCheckingAuth(false);
+      }
+    }
+    checkUser();
+  }, [router]);
 
   const handleCreate = async (formData: any) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // 🌟 GET THE LOGGED-IN USER: Fetch active session data safely
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      
-      if (userError || !user) {
-        throw new Error("You must be logged in to post a position.");
-      }
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Session expired. Please log in again.");
 
-      // Attach the secure user token identity directly to the record payload
       const jobPayload = {
         ...formData,
-        user_id: user.id, 
+        user_id: user.id, // 🌟 Securely stamps user ID onto row
       };
 
       const { error: supabaseError } = await supabase
@@ -43,6 +52,10 @@ export default function PostJobPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (checkingAuth) {
+    return <p className="text-center py-20 text-slate-500 animate-pulse">Checking credentials...</p>;
+  }
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
