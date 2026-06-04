@@ -19,7 +19,7 @@ export default function JobCard({ job }: JobCardProps) {
             {job.salary}
           </div>
         )}
-        <p className="text-sm text-gray-400 mt-4">{job.postedDate}</p>
+        <p className="text-sm text-gray-400 mt-4">{job.postedAt}</p>
       </article>
     </Link>
   )
