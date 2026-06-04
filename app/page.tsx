@@ -47,7 +47,7 @@ export default function HomePage() {
         description: job.description || "",
         requirements: job.requirements || [],
         apply_url: job.apply_url || "",
-        postedDate: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        postedAt: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       }));
 
       setJobs(formattedJobs);
