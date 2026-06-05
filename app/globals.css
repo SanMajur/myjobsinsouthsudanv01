@@ -2,7 +2,7 @@
 
 
 /* Ensure a consistent base background regardless of device settings */
-body {
-  background-color: #feffff !important; /* or whatever your desired base shade is (e.g., bg-slate-50) */
-  color: #0f172a !important; /* Ensure text color is consistent */
-}
+/* body {
+  background-color: #feffff !important; or whatever your desired base shade is (e.g., bg-slate-50)
+  color: #0f172a !important; Ensure text color is consistent
+} */
