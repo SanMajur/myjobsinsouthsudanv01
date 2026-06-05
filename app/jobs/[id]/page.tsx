@@ -41,6 +41,11 @@ export default function JobDetailsPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-4">
+      <div className="mb-4">
+        <Link href="/" className="text-sm font-medium text-blue-600 hover:underline">
+          ← Back to Feed
+        </Link>
+      </div>
       <div className="bg-white p-8 rounded-lg shadow-sm border border-slate-100">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-100 pb-6 mb-6">
           <div>

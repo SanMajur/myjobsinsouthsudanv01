@@ -27,7 +27,8 @@ export default function HomePage() {
 
       // Apply filters if provided
       if (whatString) {
-        query = query.ilike('title', `%${whatString}%`).or(`company.ilike.%${whatString}%`);
+        query = query.or(`title.ilike.%${whatString}%,company.ilike.%${whatString}%`);
+        //query = query.ilike('title', `%${whatString}%`).or(`company.ilike.%${whatString}%`);
       }
       if (whereString) {
         query = query.ilike('location', `%${whereString}%`);
@@ -37,6 +38,7 @@ export default function HomePage() {
       if (supabaseError) {
         throw supabaseError;
       }
+      console.log("Supabase Raw Response Data:", data); 
 
       const formattedJobs: Job[] = (data || []).map((job: any) => ({
         id: job.id,
@@ -45,13 +47,14 @@ export default function HomePage() {
         location: job.location,
         salary: job.salary || undefined,
         description: job.description || "",
-        requirements: job.requirements || [],
+        requirements: job.requirements || "",
         apply_url: job.apply_url || "",
         postedAt: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
       }));
 
       setJobs(formattedJobs);
     } catch (err) {
+      console.error("Error fetching jobs:", err);
       setError('Failed to fetch jobs');
     } finally {
       setLoading(false);
