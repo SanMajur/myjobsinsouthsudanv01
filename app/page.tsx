@@ -22,13 +22,12 @@ export default function HomePage() {
       setLoading(true);
       setError(null);
 
-      // ✅ FIXED: Changed 'Job' to lowercase 'jobs' to avoid case-sensitive 404/database errors
       let query = supabase.from('Job').select('*').order('created_at', { ascending: false });
 
       // Apply filters if provided
       if (whatString) {
         query = query.or(`title.ilike.%${whatString}%,company.ilike.%${whatString}%`);
-        //query = query.ilike('title', `%${whatString}%`).or(`company.ilike.%${whatString}%`);
+        // Find jobs where the search word matches the title OR matches the company name.
       }
       if (whereString) {
         query = query.ilike('location', `%${whereString}%`);
