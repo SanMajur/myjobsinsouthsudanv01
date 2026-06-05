@@ -3,7 +3,7 @@ export interface Job {
   title: string;
   company: string;
   location: string;
-  postedDate: string;
+  postedAt: string;
   salary?: string;
   description: string;
   requirements: string;
