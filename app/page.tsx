@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import SearchHero from "@/components/SearchHero";
 import JobFeed from "@/components/JobFeed";
 import FeedHeader from "@/components/FeedHeader";
-import { Job } from "@/types/job";
+import { Job, SupabaseJob } from "@/types/job";
 import { supabase } from "@/lib/supabase";
 
 export default function HomePage() {
@@ -16,53 +16,66 @@ export default function HomePage() {
   const [activeWhat, setActiveWhat] = useState("");
   const [activeWhere, setActiveWhere] = useState("");
 
-  // Function to pull filtered jobs from the database based on search criteria
-  const fetchJobs = async (whatString: string, whereString: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      let query = supabase.from('Job').select('*').order('created_at', { ascending: false });
-
-      // Apply filters if provided
-      if (whatString) {
-        query = query.or(`title.ilike.%${whatString}%,company.ilike.%${whatString}%`);
-        // Find jobs where the search word matches the title OR matches the company name.
-      }
-      if (whereString) {
-        query = query.ilike('location', `%${whereString}%`);
-      }
-
-      const { data, error: supabaseError } = await query;
-      if (supabaseError) {
-        throw supabaseError;
-      }
-      console.log("Supabase Raw Response Data:", data); 
-
-      const formattedJobs: Job[] = (data || []).map((job: any) => ({
-        id: job.id,
-        title: job.title,
-        company: job.company,
-        location: job.location,
-        salary: job.salary || undefined,
-        description: job.description || "",
-        requirements: job.requirements || "",
-        apply_url: job.apply_url || "",
-        postedAt: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-      }));
-
-      setJobs(formattedJobs);
-    } catch (err) {
-      console.error("Error fetching jobs:", err);
-      setError('Failed to fetch jobs');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchJobs(activeWhat, activeWhere);
-  }, [activeWhat, activeWhere]);
+    let isMounted = true;
+
+    const fetchJobs = async (whatString: string, whereString: string) => {
+      try {
+        // Safe state checking: only update if not already loading
+        if (isMounted) {
+          setError(null);
+        }
+
+        let query = supabase.from('Job').select('*').order('created_at', { ascending: false });
+
+        if (whatString) {
+          query = query.or(`title.ilike.%${whatString}%,company.ilike.%${whatString}%`);
+        }
+        if (whereString) {
+          query = query.ilike('location', `%${whereString}%`);
+        }
+
+        const { data, error: supabaseError } = await query;
+        if (supabaseError) throw supabaseError;
+
+        if (!isMounted) return; // Stop execution if user navigated away or changed search mid-flight
+
+        const formattedJobs: Job[] = (data || []).map((job: SupabaseJob) => ({
+          id: job.id,
+          title: job.title,
+          company: job.company,
+          location: job.location,
+          salary: job.salary || undefined,
+          description: job.description || "",
+          requirements: job.requirements || "",
+          apply_url: job.apply_url || "",
+          postedAt: new Date(job.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        }));
+
+        setJobs(formattedJobs);
+      } catch (err) {
+        if (isMounted) {
+          console.error("Error fetching jobs:", err);
+          setError('Failed to fetch jobs');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+  // Trigger the loading state safely before invoking the async thread
+      Promise.resolve().then(() => {
+        if (isMounted) setLoading(true);
+        fetchJobs(activeWhat, activeWhere);
+      });
+  
+      // CLEANUP FUNCTION: Prevents cascading race conditions
+      return () => {
+        isMounted = false;
+      };
+    }, [activeWhat, activeWhere]); 
 
   const handleSearchSubmit = (what: string, where: string) => {
     setActiveWhat(what);
@@ -76,11 +89,10 @@ export default function HomePage() {
 
   return (
     <div className="w-full">
-      {/* Render our self-contained interactive search component */}
       <SearchHero onSearch={handleSearchSubmit} />
       <main className="mx-auto max-w-3xl px-4 py-10">
         <FeedHeader activeWhat={activeWhat} activeWhere={activeWhere} onClear={handleClearFilters} />
-        {/* Render dynamic filtered list */}
+        
         {loading ? (
           <p className="text-center text-sm font-medium text-gray-500 animate-pulse py-10">
             Fetching active listings from the database...
