@@ -23,14 +23,14 @@ Connecting job seekers and employers in South Sudan
 **Week 1: Core Domain + UI**
 - [x] Day 0: Setup Next.js + TS + Tailwind
 - [x] Day 1: Job types + postedAt + isRemote + employmentType
-- [ ] Day 2: JobCard component + list view
-- [ ] Day 3: Filters: Remote + Full-time
-- [ ] Day 4: Deploy to Vercel
+- [x] Day 2: JobCard component + list view
+- [x]Day 3: Filters: Remote + Full-time
+- [x] Day 4: Deploy to Vercel
 
 **Week 2: Database + Real Data**
-- [ ] Day 5: Supabase setup + Job table schema
-- [ ] Day 6: Seed data + fetch jobs
-- [ ] Day 7: Server Components + loading states
+- [x] Day 5: Supabase setup + Job table schema
+- [x] Day 6: Seed data + fetch jobs
+- [x] Day 7: Server Components + loading states
 
 **Week 3: Employer Flow**
 - [ ] Day 8: Post Job form + validation
