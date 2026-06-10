@@ -4,7 +4,6 @@
 import { useState } from 'react';
 
 interface JobFormData {
-  id?: string;
   title: string;
   company: string;
   location: string;
