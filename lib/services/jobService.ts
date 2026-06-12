@@ -1,6 +1,7 @@
 // lib/services/jobService.ts
 import { supabase } from "@/lib/supabase";
 import { Job, SupabaseJob } from "@/types/job";
+import {formatRelativeTime} from "@/lib/utils/date";
 
 /**
  * Formats a raw database row into a standardized UI Job object.
@@ -14,11 +15,7 @@ export const formatJobData = (job: SupabaseJob): Job => ({
   description: job.description || "",
   requirements: job.requirements || "",
   apply_url: job.apply_url || "",
-  postedAt: new Date(job.created_at).toLocaleDateString("en-US", { 
-    month: "short", 
-    day: "numeric", 
-    year: "numeric" 
-  }),
+  postedAt: formatRelativeTime(new Date(job.created_at)),
 });
 
 /**
